@@ -23,9 +23,9 @@ def sign_up(request):
         else:
             for msg in form.error_messages:
                 print(form.error_messages[msg])
-            return render(request, 'accountapp/sign_up.html', {
-                'form': form,
-            })
+            # return render(request, 'accountapp/sign_up.html', {
+            #     'form': form,
+            # })
     
     else:
         form = UserCreationForm

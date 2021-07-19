@@ -1,7 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+
 <html>
-<head>
-</head>
-<body>
-    <h3>incomeapp index 화면</h3>
-</body>
+
+    <head>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <title>Ledger Panda - Income</title>
+        
+       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+        
+        <nav>
+            <div class="nav-wrapper">
+                <a href='{% url "index" %}' class='brand-logo center'>Hi, {{ user }}</a>
+                <ul class="right">
+                    <li><a href='{% url "logout" %}' class='btn'>Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+        <br>
+        <div class="section">
+            <div class="row">
+                <form class="col s12" action='{% url "add item" %}' method='post'>
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="container center">
+                            <h3 class='center'>Your total income is: <span style="color:green;">{{budget}}</span> won</h3>
+                            <!-- <h3 clas='center'>You've spent a total of : <span style="color:red;">{{expenses}}</span> dollars</h3> -->
+                            <br>
+                            <br>
+                            <div class="input-field col s3">
+                                <input placeholder="Income name" name="income_name" id='income_name' type='text' class='validate'>
+                                <label for='income_name'>Income name</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input placeholder='Amount' name='income_value' id='income_value' type='text' class='validate'>
+                                <label for='income_value'>Amount</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <input placeholder='Date of Income' name="income_dt" id="income_dt" type="text" class='datepicker'>
+                                <label for="income_dt">Income Date</label>
+                            </div>
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Add Income
+                                <i class="material-icons right">add_circle</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="row">
+                <div class="container">
+                    <div class="col s6">
+                        <table class="striped centered responsive-table">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for income_item in income_items %}
+                                <tr>
+                                    <td>{{ income_item.income_name }}</td>
+                                    <td>{{ income_item.income_value }}</td>
+                                    <td>{{ income_item.income_dt }}</td>
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 차트 들어가는 부분 -->
+                    <!-- <div class="col s6">
+                        <img class='responsive-img' src= "{% static 'budget_app/expense.jpg' %}">
+                    </div> -->
+                </div>
+        </div>
+
+            
+        </div>
+
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.datepicker');
+                var instances = M.Datepicker.init(elems, {format:'yyyy-mm-dd'});
+            });
+        </script>
+    </body>
+
 </html>

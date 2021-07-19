@@ -6,25 +6,18 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.auth.models import User
 
-
-
-class TblAccount(models.Model):
-    id = models.IntegerField(primary_key=True)
-    username = models.CharField(max_length=20, blank=True, null=True)
-    password = models.CharField(max_length=20, blank=True, null=True)
-    user_goal_income = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'tbl_account'
 
 
 class TblIncome(models.Model):
-    user = models.ForeignKey(TblAccount, models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    total_income = models.IntegerField(blank=True, null=True)
     income_category = models.CharField(max_length=20, blank=True, null=True)
-    income_values = models.IntegerField(blank=True, null=True)
-    created_dt = models.DateTimeField(blank=True, null=True)
+    income_name = models.CharField(max_length=50, null=True)
+    income_value = models.IntegerField(blank=True, null=True)
+    income_dt = models.DateField(blank=True, null=True)
+    updated_dt = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
