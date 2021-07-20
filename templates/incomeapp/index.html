@@ -7,7 +7,7 @@
     <head>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <title>Ledger Panda - Income</title>
+        <title>Ledger Panda - 수입</title>
         
        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
@@ -16,9 +16,9 @@
         
         <nav>
             <div class="nav-wrapper">
-                <a href='{% url "index" %}' class='brand-logo center'>Hi, {{ user }}</a>
+                <a href='{% url "index" %}' class='brand-logo center'>안녕하세요, {{ user }}</a>
                 <ul class="right">
-                    <li><a href='{% url "logout" %}' class='btn'>Logout</a></li>
+                    <li><a href='{% url "logout" %}' class='btn'>로그아웃</a></li>
                 </ul>
             </div>
         </nav>
@@ -29,23 +29,23 @@
                     {% csrf_token %}
                     <div class="row">
                         <div class="container center">
-                            <h3 class='center'>Your total income is: <span style="color:green;">{{budget}}</span> won</h3>
+                            <h3 class='center'>총 수입: <span style="color:green;">{{total_income}}</span> 원</h3>
                             <!-- <h3 clas='center'>You've spent a total of : <span style="color:red;">{{expenses}}</span> dollars</h3> -->
                             <br>
                             <br>
                             <div class="input-field col s3">
-                                <input placeholder="Income name" name="income_name" id='income_name' type='text' class='validate'>
-                                <label for='income_name'>Income name</label>
+                                <input placeholder="수입 항목명" name="income_name" id='income_name' type='text' class='validate'>
+                                <label for='income_name'>수입 항목명</label>
                             </div>
                             <div class="input-field col s3">
-                                <input placeholder='Amount' name='income_value' id='income_value' type='text' class='validate'>
-                                <label for='income_value'>Amount</label>
+                                <input placeholder='수입 금액' name='income_value' id='income_value' type='text' class='validate'>
+                                <label for='income_value'>수입 금액</label>
                             </div>
                             <div class="input-field col s3">
-                                <input placeholder='Date of Income' name="income_dt" id="income_dt" type="text" class='datepicker'>
-                                <label for="income_dt">Income Date</label>
+                                <input placeholder='수입이 들어온 날짜' name="income_dt" id="income_dt" type="text" class='datepicker'>
+                                <label for="income_dt">수입 일자</label>
                             </div>
-                            <button class="btn waves-effect waves-light" type="submit" name="action">Add Income
+                            <button class="btn waves-effect waves-light" type="submit" name="action">수입 추가
                                 <i class="material-icons right">add_circle</i>
                             </button>
                         </div>
@@ -61,9 +61,9 @@
                         <table class="striped centered responsive-table">
                             <thead>
                                 <tr>
-                                    <th>Item</th>
-                                    <th>Amount</th>
-                                    <th>Date</th>
+                                    <th>항목명</th>
+                                    <th>금액</th>
+                                    <th>일자</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -74,7 +74,13 @@
                                     <td>{{ income_item.income_name }}</td>
                                     <td>{{ income_item.income_value }}</td>
                                     <td>{{ income_item.income_dt }}</td>
-                                    <td></td>
+                                    <td>
+                                        <div class="delete" method='post'>
+                                            <a href= "">
+                                            <i class="material-icons">delete</i>
+                                            </a>
+                                        </div>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
