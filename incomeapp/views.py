@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect,HttpResponse
 
 from django.contrib.auth.models import User
@@ -26,7 +26,15 @@ def add_item(request):
     value = request.POST['income_value']
     date = request.POST['income_dt']
 
-    TblIncome.objects.create(income_name = name, income_value = value, income_dt = date, user=request.user)
+    item = TblIncome.objects
+    item.create(income_name = name, income_value = value, income_dt = date, user=request.user)
 
     total_income = TblIncome.objects.filter(user=request.user).aggregate(total_income=Sum('income_value',filter=Q(income_value__gt=0)))
-    return HttpResponseRedirect('/')
+
+    return HttpResponseRedirect('/income/')
+
+def delete_item(request, income_item_id):
+    item = TblIncome.objects.get(id=income_item_id)
+    item.delete()
+
+    return HttpResponseRedirect('/income/')
