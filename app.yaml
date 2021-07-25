@@ -1,0 +1,27 @@
+
+runtime: python37
+# instance_class: F4
+entrypoint: gunicorn -b :$PORT main:app
+
+beta_settings:
+  cloud_sql_instances: spry-dispatcher-320711:asia-northeast3:ledger-panda
+
+handlers:
+  # This configures Google App Engine to serve the files in the app's static
+  # directory.
+  - url: /static
+    static_dir: ledger_dashboard/static/
+
+  # This handler routes all requests not caught above to your main app. It is
+  # required when static routes are defined, but can be omitted (along with
+  # the entire handlers section) when there are no static files defined.
+  - url: /.*
+    script: auto
+
+env_variables:
+  DB_PROD: 'TRUE'
+  DB_HOST: '/cloudsql/spry-dispatcher-320711:asia-northeast3:ledger-panda'
+  DB_PORT: '3306'
+  DB_NAME: 'ledger_dashboard'
+  DB_USER: 'root'
+  DB_PASSWORD: '1234'

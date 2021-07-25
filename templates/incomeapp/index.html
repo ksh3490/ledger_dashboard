@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 
 <!DOCTYPE html>
 
@@ -25,28 +26,29 @@
     <br>
     <div class="section">
         <div class="row">
-            <form class="col s12" action='{% url "add item" %}' method='post'>
+            <form class="col s12" id="income_input" action='{% url "add item" %}' method='post'>
                 {% csrf_token %}
                 <div class="row">
                     <div class="container center">
-                        <h3 class='center'>총 수입: <span style="color:green;">{{total_income}}</span> 원</h3>
+                        <h3 class='center'>총 저금액: <span style="color:green;">{{total_income | intcomma }}</span> 원</h3>
                         <!-- <h3 clas='center'>You've spent a total of : <span style="color:red;">{{expenses}}</span> dollars</h3> -->
                         <br>
                         <br>
                         <div class="input-field col s3">
-                            <input placeholder="수입 항목명" name="income_name" id='income_name' type='text'
-                                class='validate'>
-                            <label for='income_name'>수입 항목명</label>
+                            <input placeholder="저금 항목명" name="income_name" id='income_name' type='text'
+                                class='validate' required>
+                            <label for='income_name'>저금 항목명</label>
                         </div>
                         <div class="input-field col s3">
-                            <input placeholder='수입 금액' name='income_value' id='income_value' type='text'
-                                class='validate'>
-                            <label for='income_value'>수입 금액</label>
+                            <input placeholder='저금 금액' name='income_value' id='income_value' type='text'
+                                class='validate' required
+                                onkeyup="inputNumberFormat(this)">
+                            <label for='income_value'>저금액</label>
                         </div>
                         <div class="input-field col s3">
-                            <input placeholder='수입이 들어온 날짜' name="income_dt" id="income_dt" type="text"
-                                class='datepicker'>
-                            <label for="income_dt">수입 일자</label>
+                            <input placeholder='저금한 날짜' name="income_dt" id="income_dt" type="text"
+                                class='datepicker' required>
+                            <label for="income_dt">저금 일자</label>
                         </div>
                         <button class="btn waves-effect waves-light" type="submit" name="action">수입 추가
                             <i class="material-icons right">add_circle</i>
@@ -75,8 +77,8 @@
                             {% for income_item in income_items %}
                             <tr>
                                 <td>{{ income_item.income_name }}</td>
-                                <td>{{ income_item.income_value }}</td>
-                                <td>{{ income_item.income_dt }}</td>
+                                <td>{{ income_item.income_value | intcomma }}</td>
+                                <td>{{ income_item.income_dt | date:'Y-m-d' }}</td>
                                 <td>
                                         <p><a href="{% url 'delete item' income_item.id %}">
                                             <i class="material-icons">delete</i>
@@ -107,6 +109,23 @@
             var instances = M.Datepicker.init(elems, { format: 'yyyy-mm-dd' });
         });
     </script>
+    <script>
+        function inputNumberFormat(obj) {
+            obj.value = comma(uncomma(obj.value));
+        }
+
+        function comma(str) {
+            str = String(str);
+            return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+        }
+
+        function uncomma(str) {
+            str = String(str);
+            return str.replace(/[^\d]+/g, '');
+        }
+    </script>
+
+    
 </body>
 
 </html>
